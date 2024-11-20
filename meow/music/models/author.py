@@ -1,8 +1,8 @@
 from django.db import models
-from .utils import CreatedPublishedMixin
+from .utils import CreatedPublishedMixin, CardDataMixin
 
 
-class Author(CreatedPublishedMixin):
+class Author(CreatedPublishedMixin, CardDataMixin):
 
     class Meta:
         abstract = False
@@ -21,10 +21,5 @@ class Author(CreatedPublishedMixin):
         choices=AuthorType.choices
     )
 
-    stage_name = models.CharField(
-        verbose_name="Имя автора",
-        max_length=64
-    )
-
     def __str__(self):
-        return f"{self.author_type} - {self.stage_name}"
+        return f"{self.author_type} - {self.name}"
