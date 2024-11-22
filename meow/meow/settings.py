@@ -136,12 +136,18 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CSRF_FAILURE_VIEW = 'pages.views.page_csrf_forbidden'
 
+PER_PAGE = 10
+
+# Email
+
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 
 EMAIL_FILE_PATH = BASE_DIR / 'sent_emails'
 
+# Auth
+
+AUTH_USER_MODEL = "accounts.UserAccount"
+
 LOGIN_URL = 'auth:login'
 
 LOGIN_REDIRECT_URL = 'index'
-
-PER_PAGE = 10

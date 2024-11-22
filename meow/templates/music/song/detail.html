@@ -29,10 +29,24 @@
             <p>Колличество прослушиваний: {{ song.times_played }}</p>
           </small>
         </h6>
-        <audio controls id="player">
-          <source src="{{ song.audio_file.url }}" type="audio/mp3">
-          Убедитесь, что браузер поддерживает аудио.
-        </audio>
+        <div class="container-fluid d-flex justify-content-left mb-2">
+          <button type="button" class="btn btn-primary mx-2" id="play" data-pk="{{song.pk}}">Прослушать</button>
+          <form method="post" action="{% url 'music:song_download' song.pk %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary mx-2">Загрузить</button>
+          </form>
+        </div>
+        <div>
+          <audio controls id="player" class="d-none">
+            <source src="{{ song.audio_file.url }}" type="audio/mp3">
+            Убедитесь, что браузер поддерживает аудио.
+          </audio>
+        </div>
+        {% if user.is_authenticated %}
+          <div>
+            <label for="liked"><input type="checkbox" name="liked" id="liked" data-pk="{{song.pk}}" {% if liked %} checked {% endif %}> Мне нравится</label>
+          </div>
+        {% endif %}
         {% if user.is_staff %}
           <div class="mb-2">
             <a class="btn btn-sm text-muted" href="{% url 'music:song_update' song.pk %}" role="button">
@@ -46,4 +60,46 @@
       </div>
     </div>
   </div>
+  <script>
+    const csrftoken = "{{ csrf_token }}";
+
+    function send_callback(endpoint, body, callback) {
+      fetch(
+        "/music/song/" + endpoint,
+        {
+            "headers": {
+                "X-CSRFToken": csrftoken
+            },
+            "method": "POST",
+            "body": body
+        }
+      ).then(
+        (response) => {
+          if (response.status) {
+            callback()
+          }
+        }
+      )
+    }
+
+    document.getElementById("play").addEventListener("click", (e) => {
+      const id = e.target.dataset.pk
+      const endpoint = id + "/play/"
+
+      send_callback(endpoint, {}, () => {
+        document.getElementById("player").classList.remove("d-none")
+      })
+    })
+   
+    document.getElementById("liked").addEventListener("input", (e) => {
+      const id = e.target.dataset.pk
+      const endpoint = id + "/like/"
+    
+      const formData = new FormData();
+      formData.append("like", document.getElementById("liked").checked)
+
+      send_callback(endpoint, formData, () => {})
+    })
+
+  </script>
 {% endblock %}

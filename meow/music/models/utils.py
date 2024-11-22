@@ -24,7 +24,7 @@ class CardDataMixin(models.Model):
 
     image = models.ImageField(
         verbose_name="Изображение",
-        upload_to="audio/",
+        upload_to="image/",
         null=True,
         blank=True
     )

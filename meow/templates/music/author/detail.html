@@ -20,6 +20,9 @@
             <p>{{ author.author_type }}</p>
           </small>
         </h6>
+        {% if user.is_authenticated %}
+          <label for="liked"><input type="checkbox" name="liked" id="liked" data-pk="{{author.pk}}" {% if liked %} checked {% endif %}> Мне нравится</label>
+        {% endif %}
         {% if user.is_staff %}
           <div class="mb-2">
             <a class="btn btn-sm text-muted" href="{% url 'music:author_update' author.pk %}" role="button">
@@ -33,8 +36,43 @@
       </div>
     </div>
   </div>
+  {% if page_obj %}
   <div class="col d-flex justify-content-center mt-5">
     <h2>Композиции:</h2>
   </div>
   {% include "music/includes/song_card_list.html" %}
+  {% endif %}
+  <script>
+    const csrftoken = "{{ csrf_token }}";
+
+    function send_callback(endpoint, body, callback) {
+      fetch(
+        "/music/author/" + endpoint,
+        {
+            "headers": {
+                "X-CSRFToken": csrftoken
+            },
+            "method": "POST",
+            "body": body
+        }
+      ).then(
+        (response) => {
+          if (response.status) {
+            callback()
+          }
+        }
+      )
+    }
+   
+    document.getElementById("liked").addEventListener("input", (e) => {
+      const id = e.target.dataset.pk
+      const endpoint = id + "/like/"
+    
+      const formData = new FormData();
+      formData.append("like", document.getElementById("liked").checked)
+
+      send_callback(endpoint, formData, () => {})
+    })
+
+  </script>
 {% endblock %}

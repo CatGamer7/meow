@@ -1,10 +1,12 @@
 from django.conf import settings
 from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 from django.urls import reverse
+from django.views.decorators.http import require_POST
 from django.views.generic import (CreateView,
                                   DeleteView,
                                   UpdateView,
@@ -63,6 +65,12 @@ class AuthorDetailView(DetailView):
         page_obj = page_obj.get_page(self.request.GET.get("page"))
 
         context["page_obj"] = page_obj
+
+        user = self.request.user
+        if user.is_authenticated:
+            if self.object in user.liked_authors.all():
+                context["liked"] = True
+
         return context
 
 
@@ -77,21 +85,26 @@ class AuthorListView(ListView):
         ).order_by("-created_at")
 
 
+@require_POST
+@login_required
 def add_favorite_author_view(request, author_id):
     song_obj = _get_published_author_by_id(author_id)
 
     if not song_obj:
         raise Http404("Композиция не существует")
 
-    profile = request.user.profile
-    profile.liked_authors.add(song_obj)
+    if request.POST["like"] == 'true':
+        request.user.liked_authors.add(song_obj)
+    else:
+        request.user.liked_authors.remove(song_obj)
 
+    request.user.save()
     return HttpResponse()
 
 
 def _get_published_author_by_id(author_id: int) -> Author:
     author = get_object_or_404(
-        Author.objects.prefetch_related("author", "album"),
+        Author,
         is_published=True,
         pk=author_id
     )

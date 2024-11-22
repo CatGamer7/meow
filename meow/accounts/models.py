@@ -1,20 +1,14 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 from music.models import Author, Song
 
 
-class UserAccount(models.Model):
+class UserAccount(AbstractUser):
     
     class Meta:
+        abstract = False
         verbose_name = "Аккаунт"
         verbose_name_plural = "Аккаунты"
-
-    user = models.OneToOneField(
-        User,
-        on_delete=models.CASCADE,
-        related_name="profile",
-        verbose_name="Пользователь авторизции"
-    )
 
     liked_songs = models.ManyToManyField(
         Song,
