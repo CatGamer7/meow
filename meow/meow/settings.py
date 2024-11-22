@@ -142,6 +142,6 @@ EMAIL_FILE_PATH = BASE_DIR / 'sent_emails'
 
 LOGIN_URL = 'auth:login'
 
-LOGIN_REDIRECT_URL = 'music:admin_panel'
+LOGIN_REDIRECT_URL = 'index'
 
 PER_PAGE = 10

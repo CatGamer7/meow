@@ -17,8 +17,11 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
+from music import views
 
 urlpatterns = [
+    path('', views.SongListView.as_view(), name='index'),
+
     path('auth/', include('accounts.urls')),
     path('music/', include('music.urls')),
     path('pages/', include('pages.urls')),

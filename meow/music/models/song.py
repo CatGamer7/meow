@@ -10,7 +10,7 @@ class Song(CreatedPublishedMixin, CardDataMixin):
         abstract = False
         verbose_name = "Композиция"
         verbose_name_plural = "Композиции"
-        ordering = ('-date_published',)
+        ordering = ("-date_published",)
 
         constraints = (
             models.CheckConstraint(
@@ -70,4 +70,4 @@ class Song(CreatedPublishedMixin, CardDataMixin):
     )
 
     def __str__(self):
-        return self.name
+        return f"{self.author.name} - {self.name}"

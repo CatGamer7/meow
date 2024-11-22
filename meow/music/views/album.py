@@ -1,10 +1,12 @@
+from django.conf import settings
 from django.contrib.admin.views.decorators import staff_member_required
 from django.utils.decorators import method_decorator
 from django.urls import reverse
 from django.views.generic import (CreateView,
                                   DeleteView,
                                   UpdateView,
-                                  DetailView)
+                                  DetailView,
+                                  ListView)
 from music.forms import AlbumForm
 from music.models import Album
 
@@ -15,7 +17,7 @@ class AlbumCreateView(CreateView):
     form_class = AlbumForm
     
     def get_success_url(self):
-        return reverse("music:album", args=[self.object.pk])
+        return reverse("music:album_detail", args=[self.object.pk])
 
 
 @method_decorator(staff_member_required, name='dispatch')
@@ -26,7 +28,7 @@ class AlbumUpdateView(UpdateView):
     model = Album
 
     def get_success_url(self):
-        return reverse("music:album", args=[self.object.pk])
+        return reverse("music:album_detail", args=[self.object.pk])
 
 
 @method_decorator(staff_member_required, name='dispatch')
@@ -48,3 +50,14 @@ class AlbumDetailView(DetailView):
     template_name = "music/album/detail.html"
     pk_url_kwarg = "album_id"
     model = Album
+
+
+class AlbumListView(ListView):
+    template_name = "music/album/list.html"
+    paginate_by = settings.PER_PAGE
+    model = Album
+
+    def get_queryset(self):
+        return self.model.objects.filter(
+            is_published=True
+        ).order_by("-created_at")

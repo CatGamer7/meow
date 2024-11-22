@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}
+  Композиции
+{% endblock %}
+{% block content %}
+  <div class="container-fluid d-flex flex-column align-items-center mt-5">
+    {% for author in page_obj %}
+      <article class="mb-3">
+        <a href="{% url 'music:author_detail' author.pk %}">
+          <div class="card" style="width: 40rem;">
+            <div class="card-body">
+              {% if author.image %}
+                <img class="border-3 rounded img-fluid img-thumbnail mb-2 mx-auto d-block" src="{{ author.image.url }}">
+              {% endif %}
+              <h5 class="card-title">{{ author.name }}</h5>
+              <h6 class="card-subtitle mb-2 text-muted">
+                <small>
+                  <p>{{ author.author_type }}</p>
+                </small>
+              </h6>
+            </div>
+          </div>
+        </a>
+      </article>
+    {% endfor %}
+    {% include "includes/paginator.html" %}
+  </div>
+{% endblock %}
