@@ -16,10 +16,14 @@ Including another URLconf
 """
 from django.conf import settings
 from django.conf.urls.static import static
-from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
     path('auth/', include('accounts.urls')),
     path('music/', include('music.urls')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('pages/', include('pages.urls')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) \
+  + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+handler404 = 'pages.views.page_not_found'
+handler500 = 'pages.views.page_internal_server_error'

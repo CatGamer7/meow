@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}
+  {{ song.author.name }} - {{ song.name }}
+{% endblock %}
+{% block content %}
+  <div class="col d-flex justify-content-center">
+    <div class="card" style="width: 40rem;">
+      <div class="card-body">
+        {% if song.image %}
+          <a href="{{ song.image.url }}" target="_blank">
+            <img class="border-3 rounded img-fluid img-thumbnail mb-2 mx-auto d-block" src="{{ song.image.url }}">
+          </a>
+        {% endif %}
+        <h5 class="card-title">{{ song.name }}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">
+          <small>
+            {% if not song.is_published %}
+              <p class="text-danger">Композиция снята с публикации администрацией</p>
+            {% elif not song.author.is_published %}
+              <p class="text-danger">Автор снят с публикации администрацией</p>
+            {% endif %}
+            <p>Жанр: {{ song.genre }}</p>
+            <p>Автор: <a href="{% url 'music:author_detail' song.author.pk %}">{{ song.author }}</a></p>
+            {% if song.album %}
+              <p>Альбом: <a href="{% url 'music:album_detail' song.album.pk %}">{{ song.album }}</a></p>
+            {% endif %}
+            <p>{{ song.pub_date|date:"d E Y" }}</p>
+            <p>Колличество загрузок: {{ song.times_dowloaded }}</p>
+            <p>Колличество прослушиваний: {{ song.times_played }}</p>
+          </small>
+        </h6>
+        <audio controls id="player">
+          <source src="{{ song.audio_file.url }}" type="audio/mp3">
+          Убедитесь, что браузер поддерживает аудио.
+        </audio>
+        {% if user.is_staff %}
+          <div class="mb-2">
+            <a class="btn btn-sm text-muted" href="{% url 'music:song_update' song.pk %}" role="button">
+              Отредактировать композицию
+            </a>
+            <a class="btn btn-sm text-muted" href="{% url 'music:song_delete' song.pk %}" role="button">
+              Удалить композицию
+            </a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -12,19 +12,27 @@ class Song(CreatedPublishedMixin, CardDataMixin):
         verbose_name_plural = "Композиции"
         ordering = ('-date_published',)
 
-        error_template = "Количество {} должно быть неотрицательным"
         constraints = (
             models.CheckConstraint(
                 check=models.Q(times_dowloaded__gte=0),
-                name="CHECK gte download",
-                violation_error_message=error_template.format("загрузок")
+                name="CHECK gte download"
             ),
             models.CheckConstraint(
                 check=models.Q(times_played__gte=0),
-                name="CHECK gte played",
-                violation_error_message=error_template.format("прослушиваний")
+                name="CHECK gte played"
             )
         )
+        
+    class SongGenre(models.TextChoices):
+        POP = ("Поп", "Поп")
+        ROCK = ("Рок", "Рок")
+        METAL = ("Метал", "Метал")
+
+    genre = models.CharField(
+        verbose_name="Жанр",
+        max_length=32,
+        choices=SongGenre.choices
+    )
 
     author = models.ForeignKey(
         Author,
@@ -62,4 +70,4 @@ class Song(CreatedPublishedMixin, CardDataMixin):
     )
 
     def __str__(self):
-        return f"{self.album_type} - {self.name}"
+        return self.name

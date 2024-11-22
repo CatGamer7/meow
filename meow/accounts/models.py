@@ -11,6 +11,7 @@ class UserAccount(models.Model):
 
     user = models.OneToOneField(
         User,
+        on_delete=models.CASCADE,
         related_name="Profile",
         verbose_name="Пользователь авторизции"
     )

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}
+  Панель администратора
+{% endblock %}
+{% block content %}
+  <div class="col d-flex justify-content-center">
+    <div class="card" style="width: 40rem;">
+      <div class="card-header">
+        Панель администратора
+      </div>
+      <div class="card-body">
+        <div>
+            <h6>Популярность композиций</h6>
+        </div>
+        <hr>
+        <div>
+            <h6>Создание</h6>
+            <ul>
+                <li>
+                    <a href="{% url 'music:album_create' %}">Альбомы</a>
+                </li>
+                <li>
+                    <a href="{% url 'music:author_create' %}">Авторы</a>
+                </li>
+                <li>
+                    <a href="{% url 'music:song_create' %}">Композиции</a>
+                </li>
+            </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

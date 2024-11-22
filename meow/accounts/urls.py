@@ -5,5 +5,5 @@ app_name = 'auth'
 
 urlpatterns = [
     path('', include('django.contrib.auth.urls')),
-    path('register/', views.RegisterView.as_view(), name='register')
+    path('register/', views.RegisterView.as_view(), name='registration')
 ]

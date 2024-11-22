@@ -5,5 +5,5 @@ from music.models import Album
 class AlbumForm(ModelForm):
 
     class Meta:
-        exlude = ()
+        exclude = ()
         model = Album

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}
+  {{ author.name }}
+{% endblock %}
+{% block content %}
+  <div class="col d-flex justify-content-center">
+    <div class="card" style="width: 40rem;">
+      <div class="card-body">
+        {% if author.image %}
+          <a href="{{ author.image.url }}" target="_blank">
+            <img class="border-3 rounded img-fluid img-thumbnail mb-2 mx-auto d-block" src="{{ author.image.url }}">
+          </a>
+        {% endif %}
+        <h5 class="card-title">{{ author.name }}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">
+          <small>
+            {% if not author.is_published %}
+              <p class="text-danger">Автор снят с публикации администрацией</p>
+            {% endif %}
+            <p>{{ author.author_type }}</p>
+          </small>
+        </h6>
+        {% if user.is_staff %}
+          <div class="mb-2">
+            <a class="btn btn-sm text-muted" href="{% url 'music:author_update' author.pk %}" role="button">
+              Отредактировать автора
+            </a>
+            <a class="btn btn-sm text-muted" href="{% url 'music:author_delete' author.pk %}" role="button">
+              Удалить автора
+            </a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% include "music/includes/song_card_list.html" %}
+{% endblock %}

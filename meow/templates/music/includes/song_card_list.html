@@ -1,0 +1,26 @@
+<div class="container-fluid d-flex flex-column align-items-center mt-5">
+  {% for song in page_obj %}
+    <article class="mb-3">
+      <a href="{% url 'music:song_detail' song.pk %}">
+        <div class="card" style="width: 40rem;">
+          <div class="card-body">
+            {% if song.image %}
+              <img class="border-3 rounded img-fluid img-thumbnail mb-2 mx-auto d-block" src="{{ song.image.url }}">
+            {% endif %}
+            <h5 class="card-title">{{ song.name }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">
+              <small>
+                <p>Жанр: {{ song.genre }}</p>
+                {% if song.album %}
+                  <p>Альбом: <a href="{% url 'music:album_detail' song.album.pk %}">{{ song.album }}</a></p>
+                {% endif %}
+                <p>{{ song.pub_date|date:"d E Y" }}</p>
+              </small>
+            </h6>
+          </div>
+        </div>
+      </a>
+    </article>
+  {% endfor %}
+  {% include "includes/paginator.html" %}
+</div>

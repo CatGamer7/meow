@@ -8,18 +8,19 @@ class Author(CreatedPublishedMixin, CardDataMixin):
         abstract = False
         verbose_name = "Музыкальный автор"
         verbose_name_plural = "Музыкальные авторы"
+        ordering = ('-created_at',)
 
     class AuthorType(models.TextChoices):
-        BAND = ("BD", "Группа")
-        SOLO = ("SL", "Сольный исполнитель")
-        ORCHESTRA = ("OR", "Оркестр")
-        ENSEMBLE = ("EN", "Ансамбль")
+        BAND = ("Группа", "Группа")
+        SOLO = ("Сольный исполнитель", "Сольный исполнитель")
+        ORCHESTRA = ("Оркестр", "Оркестр")
+        ENSEMBLE = ("Ансамбль", "Ансамбль")
 
     author_type = models.CharField(
         verbose_name="Тип автора",
-        max_length=2,
+        max_length=32,
         choices=AuthorType.choices
     )
 
     def __str__(self):
-        return f"{self.author_type} - {self.name}"
+        return self.name

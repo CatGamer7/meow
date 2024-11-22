@@ -8,16 +8,17 @@ class Album(CreatedPublishedMixin, CardDataMixin):
         abstract = False
         verbose_name = "Музыкальный альбом"
         verbose_name_plural = "Музыкальные альбомы"
+        ordering = ('-created_at',)
 
     class AlbumType(models.TextChoices):
-        BAND_ALBUM = ("BA", "Албом группы")
-        COLLECTION = ("CL", "Коллекция")
+        BAND_ALBUM = ("Албом группы", "Албом группы")
+        COLLECTION = ("Коллекция", "Коллекция")
 
     album_type = models.CharField(
         verbose_name="Тип альбома",
-        max_length=2,
+        max_length=32,
         choices=AlbumType.choices
     )
 
     def __str__(self):
-        return f"{self.album_type} - {self.name}"
+        return self.name

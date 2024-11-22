@@ -5,5 +5,5 @@ from music.models import Author
 class AuthorForm(ModelForm):
 
     class Meta:
-        exlude = ()
+        exclude = ()
         model = Author
