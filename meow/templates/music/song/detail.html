@@ -25,7 +25,7 @@
               <p>Альбом: <a href="{% url 'music:album_detail' song.album.pk %}">{{ song.album }}</a></p>
             {% endif %}
             <p>{{ song.pub_date|date:"d E Y" }}</p>
-            <p>Колличество загрузок: {{ song.times_dowloaded }}</p>
+            <p>Колличество загрузок: {{ song.times_downloaded }}</p>
             <p>Колличество прослушиваний: {{ song.times_played }}</p>
           </small>
         </h6>

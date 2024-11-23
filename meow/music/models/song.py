@@ -14,7 +14,7 @@ class Song(CreatedPublishedMixin, CardDataMixin):
 
         constraints = (
             models.CheckConstraint(
-                check=models.Q(times_dowloaded__gte=0),
+                check=models.Q(times_downloaded__gte=0),
                 name="CHECK gte download"
             ),
             models.CheckConstraint(
@@ -54,7 +54,7 @@ class Song(CreatedPublishedMixin, CardDataMixin):
         verbose_name="Дата публикации",
     )
 
-    times_dowloaded = models.IntegerField(
+    times_downloaded = models.IntegerField(
         verbose_name="Количество загрузок",
         default=0,
     )

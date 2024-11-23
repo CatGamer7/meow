@@ -98,7 +98,7 @@ def song_download_veiw(request, song_id):
     if not song_obj:
         raise Http404("Композиция не существует")
     
-    song_obj.times_dowloaded += 1
+    song_obj.times_downloaded += 1
     song_obj.save()
 
     return FileResponse(song_obj.audio_file.file, as_attachment=True, filename=f"{song_obj}.mp3")

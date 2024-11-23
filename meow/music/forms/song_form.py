@@ -5,7 +5,7 @@ from music.models import Song
 class SongForm(ModelForm):
 
     class Meta:
-        exclude = ('times_dowloaded', 'times_played')
+        exclude = ('times_downloaded', 'times_played')
         widgets = {
             'date_published': DateInput(attrs={'type': 'date'})
         }

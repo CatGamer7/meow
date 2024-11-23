@@ -9,10 +9,34 @@
         Панель администратора
       </div>
       <div class="card-body">
-        <div>
+        {% if download_rating or played_rating %}
+          <div>
             <h6>Популярность композиций</h6>
-        </div>
-        <hr>
+            <div class="row">
+              {% if download_rating %}
+                <div class="col">
+                  <p>По загрузкам:</p>
+                  <ol>
+                    {% for song in download_rating %}
+                      <li><a href="{% url 'music:song_detail' song.pk %}">{{ song.name }}</a> - {{ song.times_downloaded }}</li>
+                    {% endfor %}
+                  </ol>
+                </div>
+              {% endif %}
+              {% if played_rating %}
+                <div class="col">
+                  <p>По прослушиваниям:</p>
+                  <ol>
+                    {% for song in played_rating %}
+                      <li><a href="{% url 'music:song_detail' song.pk %}">{{ song.name }}</a> - {{ song.times_played }}</li>
+                    {% endfor %}
+                  </ol>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+          <hr>
+        {% endif %}
         <div>
             <h6>Создание</h6>
             <ul>
