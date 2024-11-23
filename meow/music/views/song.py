@@ -95,7 +95,7 @@ def song_download_veiw(request, song_id):
     song_obj = _get_published_song_by_id(song_id)
 
     if not song_obj:
-        raise Http404("Композиция не существует")
+        raise Http404(f"Композиция с ключом {song_id} не существует")
 
     song_obj.times_downloaded += 1
     song_obj.save()
