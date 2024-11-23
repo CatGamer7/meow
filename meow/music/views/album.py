@@ -15,7 +15,7 @@ from music.models import Album
 class AlbumCreateView(CreateView):
     template_name = "music/album/edit_form.html"
     form_class = AlbumForm
-    
+
     def get_success_url(self):
         return reverse("music:album_detail", args=[self.object.pk])
 
@@ -39,12 +39,12 @@ class AlbumDeleteView(DeleteView):
 
     def get_success_url(self):
         return reverse("pages:about")
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["form"] = AlbumForm(instance=self.object)
         return context
-    
+
 
 class AlbumDetailView(DetailView):
     template_name = "music/album/detail.html"

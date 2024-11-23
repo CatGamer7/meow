@@ -4,7 +4,7 @@ from music.models import Author, Song
 
 
 class UserAccount(AbstractUser):
-    
+
     class Meta:
         abstract = False
         verbose_name = "Аккаунт"

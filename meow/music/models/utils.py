@@ -18,7 +18,7 @@ class CreatedPublishedMixin(models.Model):
 
 
 class CardDataMixin(models.Model):
-    
+
     class Meta:
         abstract = True
 

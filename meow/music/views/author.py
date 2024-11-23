@@ -20,7 +20,7 @@ from music.models import Author
 class AuthorCreateView(CreateView):
     template_name = "music/author/edit_form.html"
     form_class = AuthorForm
-    
+
     def get_success_url(self):
         return reverse("music:author_detail", args=[self.object.pk])
 
@@ -50,6 +50,7 @@ class AuthorDeleteView(DeleteView):
         context["form"] = AuthorForm(instance=self.object)
         return context
 
+
 class AuthorDetailView(DetailView):
     template_name = "music/author/detail.html"
     pk_url_kwarg = "author_id"
@@ -57,7 +58,7 @@ class AuthorDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        
+
         page_obj = Paginator(
             self.object.songs.all(),
             settings.PER_PAGE

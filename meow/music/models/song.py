@@ -22,7 +22,7 @@ class Song(CreatedPublishedMixin, CardDataMixin):
                 name="CHECK gte played"
             )
         )
-        
+
     class SongGenre(models.TextChoices):
         POP = ("Поп", "Поп")
         ROCK = ("Рок", "Рок")
@@ -40,7 +40,7 @@ class Song(CreatedPublishedMixin, CardDataMixin):
         related_name="songs",
         verbose_name="Автор"
     )
-    
+
     album = models.ForeignKey(
         Album,
         on_delete=models.SET_NULL,

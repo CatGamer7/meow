@@ -20,7 +20,7 @@ from music.models import Song
 class SongCreateView(CreateView):
     template_name = "music/song/edit_form.html"
     form_class = SongForm
-    
+
     def get_success_url(self):
         return reverse("music:song_detail", args=[self.object.pk])
 
@@ -49,7 +49,7 @@ class SongDeleteView(DeleteView):
         context = super().get_context_data(**kwargs)
         context["form"] = SongForm(instance=self.object)
         return context
-    
+
 
 class SongDetailView(DetailView):
     template_name = "music/song/detail.html"
@@ -70,7 +70,7 @@ class SongDetailView(DetailView):
             if self.object in user.liked_songs.all():
                 context["liked"] = True
 
-        return context 
+        return context
 
 
 class SongListView(ListView):
@@ -97,11 +97,15 @@ def song_download_veiw(request, song_id):
 
     if not song_obj:
         raise Http404("Композиция не существует")
-    
+
     song_obj.times_downloaded += 1
     song_obj.save()
 
-    return FileResponse(song_obj.audio_file.file, as_attachment=True, filename=f"{song_obj}.mp3")
+    return FileResponse(
+        song_obj.audio_file.file,
+        as_attachment=True,
+        filename=f"{song_obj}.mp3"
+    )
 
 
 @require_POST
@@ -109,7 +113,7 @@ def increase_song_played_view(request, song_id):
     song_obj = _get_published_song_by_id(song_id)
 
     if not song_obj:
-        raise Http404("Композиция не существует")
+        raise Http404(f"Композиция с ключом {song_id} не существует")
 
     song_obj.times_played += 1
     song_obj.save()
@@ -123,7 +127,7 @@ def add_favorite_song_view(request, song_id):
     song_obj = _get_published_song_by_id(song_id)
 
     if not song_obj:
-        raise Http404("Композиция не существует")
+        raise Http404(f"Композиция с ключом {song_id} не существует")
 
     if request.POST["like"] == 'true':
         request.user.liked_songs.add(song_obj)

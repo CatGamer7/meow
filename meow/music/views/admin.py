@@ -5,8 +5,12 @@ from music.models import Song
 
 @staff_member_required
 def admin_panel_view(request):
-    download_rating = Song.objects.values("pk", "name", "times_downloaded").order_by("-times_downloaded")[:5]
-    played_rating = Song.objects.values("pk", "name", "times_played").order_by("-times_played")[:5]
+    download_rating = Song.objects.values(
+        "pk", "name", "times_downloaded"
+    ).order_by("-times_downloaded")[:5]
+    played_rating = Song.objects.values(
+        "pk", "name", "times_played"
+    ).order_by("-times_played")[:5]
 
     context = {
         "download_rating": download_rating,
