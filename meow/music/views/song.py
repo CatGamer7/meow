@@ -87,7 +87,6 @@ class SongListView(ListView):
             date_published__lte=now,
             is_published=True,
             author__is_published=True,
-            album__is_published=True,
         ).order_by("-date_published")
 
 
@@ -145,7 +144,6 @@ def _get_published_song_by_id(song_id: int) -> Song:
         date_published__lte=now,
         is_published=True,
         author__is_published=True,
-        album__is_published=True,
         pk=song_id
     )
 
